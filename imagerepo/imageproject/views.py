@@ -45,12 +45,15 @@ def buy_image(request, image_id):
     image = get_object_or_404(Image, pk=image_id)
     user = get_user(request)
     profile = user.profile
-    if image.owner == None:
+    if image.deleted == True:
         return HttpResponse('cannot buy this image')
     if profile.balance < image.price:
         return HttpResponse('not enough balance')
     profile.balance -= image.price
     profile.save()
+    if image.owner != None:
+        image.owner.profile.balance += image.price
+        image.owner.profile.save()
     Transaction.objects.create(buyer=user, image=image, bought_date=timezone.now())
     return redirect('home')
 
