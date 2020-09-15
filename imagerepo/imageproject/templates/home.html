@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+  Hi {{ user.username }}! {{ value|linebreaks }}
+  You have ${{user.profile.balance}}! {{ value|linebreaks }}
+  <a href="{% url 'loadbalance' %}" target="_blank">Load Balance</a>{{ value|linebreaks }}
+  <a href="{% url 'transaction_list' %}" target="_blank">Purchases</a>{{ value|linebreaks }}
+  <a href="{% url 'upload_list' %}" target="_blank">Uploaded images</a>{{ value|linebreaks }}
+  <a href="{% url 'upload_new' %}" target="_blank">Upload new image</a>{{ value|linebreaks }}
+  <a href="{% url 'search' %}" target="_blank">Marketplace</a>{{ value|linebreaks }}
+  <a href="{% url 'logout' %}">Log Out</a>{{ value|linebreaks }}
+  <a href="{% url 'password_reset' %}">Reset Password</a>{{ value|linebreaks }}
+{% else %}
+  <p>You are not logged in</p>
+  <a href="{% url 'login' %}">Log In</a>
+{% endif %}
+{% endblock %}

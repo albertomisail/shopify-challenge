@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+<h1>Load Balance</h1>
+
+{% block content %}
+{% if user.is_authenticated %}
+  Hi {{ user.username }}! {{ value|linebreaks }}
+  You have ${{user.profile.balance}}! {{ value|linebreaks }}
+
+  <form action="loadbalance" method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" value="Submit">
+  </form>  
+{% else %}
+  <p>You are not logged in</p>
+  <a href="{% url 'login' %}">Log In</a>
+{% endif %}
+{% endblock %}

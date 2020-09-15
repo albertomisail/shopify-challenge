@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Search">
+    </form>
+        {% if images and images|length > 0 %}
+            <table class="table table-bordered table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Title</th>
+                        <th>Price</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for image in images %}
+                        <tr>
+                            <td><img src={{ image.image.url }} style="width:50px;height:50px"/></td>
+                            <td>{{ image.title }}</td>
+                            <td>{{ image.price }}</td>
+                            <td><a href="{% url 'buy' image.id %}" target="_blank">Buy</a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No images yet.</p>
+        {% endif %}
+    {% else %}
+        <p>You are not logged in</p>
+        <a href="{% url 'login' %}">Log In</a>
+    {% endif %}
+{% endblock %}
